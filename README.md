@@ -1,11 +1,12 @@
 # SimpleSVMs
 
-> We should have a JuMP-based SVM
+> We should have a JuMP-based SVM.
 
-[https://github.com/oxinabox](oxinabox).
+[oxinabox](https://github.com/oxinabox)  
 
-Implements simple Support Vector Machines using JuMP, with both L1 and L2 penalty.
-Since the λ parameter really is just a Lagrange multiplier, penalties are implemented as constraints directly.
+Implements simple Support Vector Machines using JuMP, with both L1 and L2
+regularization. Since the λ parameter really is just a Lagrange multiplier,
+penalties are implemented as constraints directly.
 
 ## Example
 
