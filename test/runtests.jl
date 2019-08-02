@@ -10,7 +10,7 @@ import Ipopt
     X = vcat(rand(20, 2), rand(30,2) .+ [1,0.5]')
     y = append!(ones(20), -ones(30))
     prevloss = 500.0
-    for rhs in [0.0, 0.1, 0.5]
+    for rhs in [0.0, 0.1, 0.5, 2.0, 10.0, 40.0, 100.0]
         (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L1Penalty(rhs), X, y, with_optimizer(Clp.Optimizer, LogLevel = 0))
         optimize!(m)
         res = JuMP.objective_value(m)

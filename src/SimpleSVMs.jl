@@ -25,7 +25,7 @@ function build_svm(penalty, X, y, optimizer)
     @variable(m, b)
     @variable(m, l[1:nobs] ≥ 0)
     @constraint(m, hinge_loss[i=1:nobs], l[i] ≥ 1 - y[i] * (X[i,:]⋅w + b))
-    restrict_weights(m, penalty, w)
+    restrict_weights(m, penalty, w, b)
     @objective(m, Min, sum(l))
     return (m, w, b)
 end
@@ -35,11 +35,15 @@ struct L1Penalty{R}
     L1Penalty(rhs::R) where {R} = new{R}(rhs)
 end
 
-function restrict_weights(m::JuMP.AbstractModel, l1::L1Penalty, w)
+function restrict_weights(m::JuMP.AbstractModel, l1::L1Penalty, w, b)
     nfeat = length(w)
     @variable(m, wm[1:nfeat] ≥ 0)
     @variable(m, wp[1:nfeat] ≥  0)
-    @constraint(m, sum(wm) + sum(wp) ≤ l1.rhs)
+    @constraint(m, weq[i=1:nfeat], wp[i] - wm[i] == w[i])
+    @variable(m, bm ≥ 0)
+    @variable(m, bp ≥ 0)
+    @constraint(m, beq, bp - bm == b)
+    @constraint(m, sum(wm) + sum(wp) + bp + bm ≤ l1.rhs)
 end
 
 struct L2Penalty{R}
@@ -47,8 +51,8 @@ struct L2Penalty{R}
     L2Penalty(rhs::R) where {R} = new{R}(rhs)
 end
 
-function restrict_weights(m::JuMP.AbstractModel, l2::L2Penalty, w)
-    @constraint(m, w ⋅ w ≤ l2.rhs)
+function restrict_weights(m::JuMP.AbstractModel, l2::L2Penalty, w, b)
+    @constraint(m, w ⋅ w  + b^2 ≤ l2.rhs)
 end
 
 end # module
