@@ -48,4 +48,5 @@ Plots.title!(p, "L2 loss")
 Plots.savefig("example_l2.png")
 ```
 
-See ![](img/example_l1.png) and ![](img/example_l2.png) for the results.
+![](img/example_l1.png)
+![](img/example_l2.png)
