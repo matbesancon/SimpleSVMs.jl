@@ -4,6 +4,8 @@ import StatsBase
 using JuMP
 using LinearAlgebra: ⋅
 
+export SVM, build_svm, L1Penalty, L2Penalty
+
 struct SVM{W, B}
     w::W
     b::B
