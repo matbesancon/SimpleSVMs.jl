@@ -1,5 +1,7 @@
 # SimpleSVMs
 
+[![Build Status](https://travis-ci.org/matbesancon/SimpleSVMs.jl.svg?branch=master)](https://travis-ci.org/matbesancon/SimpleSVMs.jl)
+
 > We should have a JuMP-based SVM.
 
 [oxinabox](https://github.com/oxinabox)  
