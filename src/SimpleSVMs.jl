@@ -12,8 +12,8 @@ struct SVM{W, B}
     SVM(w::W, b::B) where {W, B} = new{W,B}(w,b)
 end
 
-function StatsBase.fit(::Type{<:SVM}, penalty, X, y, optimizer)
-    (m, w, b) = build_svm(penalty, X, y, optimizer)
+function StatsBase.fit(::Type{<:SVM}, penalty_func, X, y, optimizer)
+    (m, w, b) = build_svm(penalty_func, X, y, optimizer)
     optimize!(m)
     @assert termination_status(m) == JuMP.MOI.OPTIMAL
     return SVM(JuMP.value.(w), JuP.value.(b))
@@ -27,9 +27,9 @@ function build_svm(penalty, X, y, optimizer)
     @variable(m, b)
     @variable(m, l[1:nobs] ≥ 0)
     @constraint(m, hinge_loss[i=1:nobs], l[i] ≥ 1 - y[i] * (X[i,:]⋅w + b))
-    restrict_weights(m, penalty, w, b)
+    pen_cons = restrict_weights(m, penalty, w, b)
     @objective(m, Min, sum(l))
-    return (m, w, b)
+    return (m, w, b, pen_cons)
 end
 
 struct L1Penalty{R}
