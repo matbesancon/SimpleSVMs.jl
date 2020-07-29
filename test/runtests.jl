@@ -10,8 +10,10 @@ import Ipopt
     X = vcat(rand(20, 2), rand(30,2) .+ [1,0.5]')
     y = append!(ones(20), -ones(30))
     prevloss = 500.0
+    optimizer = optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0)
     for rhs in [0.0, 0.1, 0.5, 2.0, 10.0, 40.0, 100.0]
-        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L1Penalty(rhs), X, y, with_optimizer(Clp.Optimizer, LogLevel = 0))
+        
+        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L1Penalty(rhs), X, y, optimizer)
         optimize!(m)
         res = JuMP.objective_value(m)
         @test res < prevloss
@@ -28,8 +30,9 @@ end
     X = vcat(randn(20, 2), randn(30,2) .+ [3.0,1.5]')
     y = append!(ones(20), -ones(30))
     prevloss = 500.0
+    optimizer = optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0)    
     for rhs in [0.0, 0.1, 0.5, 1.5, 100.0]
-        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L1Penalty(rhs), X, y, with_optimizer(Clp.Optimizer, LogLevel = 0))
+        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L1Penalty(rhs), X, y, optimizer)
         optimize!(m)
         res = JuMP.objective_value(m)
         @test res ≤ prevloss
@@ -43,8 +46,9 @@ end
     X = vcat(randn(20, 2), randn(30,2) .+ [3.0,1.5]')
     y = append!(ones(20), -ones(30))
     prevloss = 500.0
+    optimizer = optimizer_with_attributes(Ipopt.Optimizer, "print_level" => 0)
     for rhs in [0.0, 0.1, 0.5, 1.5, 100.0]
-        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L2Penalty(rhs), X, y, with_optimizer(Ipopt.Optimizer, print_level = 0))
+        (m, w, b) = SimpleSVMs.build_svm(SimpleSVMs.L2Penalty(rhs), X, y, optimizer)
         optimize!(m)
         res = JuMP.objective_value(m)
         @test res ≤ prevloss
