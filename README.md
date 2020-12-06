@@ -1,6 +1,7 @@
 # SimpleSVMs
 
-[![Build Status](https://travis-ci.org/matbesancon/SimpleSVMs.jl.svg?branch=master)](https://travis-ci.org/matbesancon/SimpleSVMs.jl)
+[![Build Status](https://github.com/matbesancon/SimpleSVMs.jl/workflows/CI/badge.svg)](https://github.com/matbesancon/SimpleSVMs.jl/actions)
+[![Coverage](https://codecov.io/gh/matbesancon/SimpleSVMs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/matbesancon/SimpleSVMs.jl)
 
 > We should have a JuMP-based SVM.
 
